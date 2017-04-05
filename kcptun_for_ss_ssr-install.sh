@@ -35,8 +35,8 @@ shell_update(){
         fi
     fi
 }
-shell_download_link="https://raw.githubusercontent.com/onekeyshell/kcptun_for_ss_ssr/master/kcptun_for_ss_ssr-install.sh"
-program_version_link="https://raw.githubusercontent.com/onekeyshell/kcptun_for_ss_ssr/master/version.sh"
+shell_download_link="https://raw.githubusercontent.com/FIREU666/onekey-kcp/master/kcptun_for_ss_ssr-install.sh"
+program_version_link="https://raw.githubusercontent.com/FIREU666/onekey-kcp/master/version.sh"
 ss_libev_config="/etc/shadowsocks-libev/config.json"
 ssr_config="/usr/local/shadowsocksR/shadowsocksR.json"
 kcptun_config="/usr/local/kcptun/config.json"
@@ -272,13 +272,13 @@ get_ip(){
     [ ! -z ${IP} ] && echo ${IP} || echo
 }
 Dispaly_Selection(){
-    def_Install_Select="5"
+    def_Install_Select="3"
     echo -e "${COLOR_YELOW}You have 5 options for your kcptun/ss/ssr install.${COLOR_END}"
     echo "1: Install Shadowsocks-libev"
     echo "2: Install ShadowsocksR(python)"
-    echo "3: Install KCPTUN"
+    echo "3: Install KCPTUN [default]"
     echo "4: Install Shadowsocks-libev + KCPTUN"
-    echo "5: Install ShadowsocksR(python) + KCPTUN [default]"
+    echo "5: Install ShadowsocksR(python) + KCPTUN"
     read -p "Enter your choice (1, 2, 3, 4, 5 or exit. default [${def_Install_Select}]): " Install_Select
 
     case "${Install_Select}" in
@@ -308,7 +308,7 @@ Dispaly_Selection(){
         ;;
     *)
         echo
-        echo -e "${COLOR_PINK}No input,You will install ShadowsocksR(python) + KCPTUN${COLOR_END}"
+        echo -e "${COLOR_PINK}No input,You will install KCPTUN${COLOR_END}"
         Install_Select="${def_Install_Select}"
     esac
 }
