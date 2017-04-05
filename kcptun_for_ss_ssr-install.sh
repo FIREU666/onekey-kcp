@@ -1205,7 +1205,7 @@ pre_install_kcptun_for_ss_ssr(){
         echo "=========================================================="
         echo -e "${COLOR_PINK}Please input your KCPTUN setting:${COLOR_END}"
         echo
-        def_kcptun_pwd=`666666`
+        def_kcptun_pwd="666666"
         echo "Please input password for kcptun"
         read -p "(Default password: ${def_kcptun_pwd}):" set_kcptun_pwd
         [ -z "${set_kcptun_pwd}" ] && set_kcptun_pwd="${def_kcptun_pwd}"
