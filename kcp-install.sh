@@ -42,8 +42,7 @@ ssr_config="/usr/local/shadowsocksR/shadowsocksR.json"
 kcptun_config="/usr/local/kcptun/config.json"
 # Check if user is root
 
-contact_us="https://github.com/onekeyshell/kcptun_for_ss_ssr/issues"
-fun_clangcn(){
+fire_check(){
     local clear_flag=""
     clear_flag=$1
     if [[ ${clear_flag} == "clear" ]]; then
@@ -53,9 +52,9 @@ fun_clangcn(){
     echo "+----------------------------------------------------------------+"
     echo "|                KCPTUN for SS/SSR on Linux Server               |"
     echo "+----------------------------------------------------------------+"
-    echo "|  A tool to auto-compile & install KCPTUN for SS/SSR on Linux   |"
+    echo "|  One key to install KCPTUN for SS/SSR on Linux   |"
     echo "+----------------------------------------------------------------+"
-    echo "| Intro: ${contact_us} |"
+    echo "| Intro:FIREU666 |"
     echo "+----------------------------------------------------------------+"
     echo ""
 }
@@ -255,30 +254,20 @@ pre_install_packs(){
         fi
     fi
 }
-# Random password
-fun_randstr(){
-  index=0
-  strRandomPass=""
-  for i in {a..z}; do arr[index]=$i; index=`expr ${index} + 1`; done
-  for i in {A..Z}; do arr[index]=$i; index=`expr ${index} + 1`; done
-  for i in {0..9}; do arr[index]=$i; index=`expr ${index} + 1`; done
-  for i in {1..16}; do strRandomPass="$strRandomPass${arr[$RANDOM%$index]}"; done
-  echo $strRandomPass
-}
+
 get_ip(){
     local IP=$(ip addr | egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | egrep -v "^192\.168|^172\.1[6-9]\.|^172\.2[0-9]\.|^172\.3[0-2]\.|^10\.|^127\.|^255\.|^0\." | head -n 1)
-    [ -z ${IP} ] && IP=$(wget -qO- -t1 -T2 ip.clang.cn | sed -r 's/\r//')
-    [ -z ${IP} ] && IP=$(wget -qO- -t1 -T2 ipv4.icanhazip.com | sed -r 's/\r//')
+    [ -z ${IP} ] && IP=$(wget -qO- -t1 -T2 ipv4.icanhazip.com )
+    [ -z ${IP} ] && IP=$(wget -qO- -t1 -T2 ipinfo.io/ip )
     [ ! -z ${IP} ] && echo ${IP} || echo
 }
 Dispaly_Selection(){
-    def_Install_Select="3"
-    echo -e "${COLOR_YELOW}You have 5 options for your kcptun/ss/ssr install.${COLOR_END}"
-    echo "3: Install KCPTUN [default]"
-    read -p "Enter your choice (1, 2, 3, 4, 5 or exit. default [${def_Install_Select}]): " Install_Select
+    def_Install_Select="1"
+    echo -e "${COLOR_YELOW}You will install kcptun/ss/ssr.${COLOR_END}"
+    read -p "[${def_Install_Select}]): " Install_Select
 
     case "${Install_Select}" in
-    3)
+    1)
         echo
         echo -e "${COLOR_PINK}You will install KCPTUN ${KCPTUN_VER}${COLOR_END}"
         ;;
@@ -298,12 +287,8 @@ install_cleanup(){
     rm -rf .version.sh ${shadowsocks_libev_ver} ${shadowsocks_libev_ver}.tar.gz manyuser.zip shadowsocksr-manyuser shadowsocks-manyuser ${kcptun_latest_file} ${libsodium_laster_ver} ${libsodium_laster_ver}.tar.gz ${mbedtls_laster_ver} ${mbedtls_laster_ver}-gpl.tgz
 }
 check_kcptun_for_ss_ssr_installed(){
-    ss_libev_installed_flag=""
-    ssr_installed_flag=""
     kcptun_installed_flag=""
     kcptun_install_flag=""
-    ss_libev_install_flag=""
-    ssr_install_flag=""
     if [ "${Install_Select}" == "3" ] || [ "${Update_Select}" == "3" ] || [ "${Update_Select}" == "4" ] || [ "${Uninstall_Select}" == "3" ] || [ "${Uninstall_Select}" == "4" ]; then
         if [[ "$(command -v "/usr/local/kcptun/kcptun")" ]] || [[ "$(command -v "kcptun")" ]]; then
             kcptun_installed_flag="true"
@@ -768,32 +753,6 @@ show_kcptun_for_ss_ssr(){
         echo -e "========================= Your Server Setting ========================="
         echo -e "Your Server IP: ${COLOR_GREEN}${SERVER_IP}${COLOR_END}"
     fi
-    if [ "${ss_libev_install_flag}" == "true" ]; then
-        echo "-------------------- SS-libev Setting --------------------"
-        echo -e "SS-libev configure file    : ${COLOR_GREEN}${ss_libev_config}${COLOR_END}"
-        echo -e "SS-libev Server Port       : ${COLOR_GREEN}${set_ss_libev_port}${COLOR_END}"
-        echo -e "SS-libev Password          : ${COLOR_GREEN}${set_ss_libev_pwd}${COLOR_END}"
-        echo -e "SS-libev Encryption Method : ${COLOR_GREEN}${set_ss_libev_method}${COLOR_END}"
-        #echo -e "SS-libev Local IP          : ${COLOR_GREEN}127.0.0.1${COLOR_END}"
-        #echo -e "SS-libev Local Port        : ${COLOR_GREEN}${ss_libev_local_port}${COLOR_END}"
-        echo "----------------------------------------------------------"
-        echo -e "SS-libev status manage: ${COLOR_PINK}/etc/init.d/shadowsocks${COLOR_END} {${COLOR_GREEN}start|stop|restart|status|config|version${COLOR_END}}"
-        echo "=========================================================="
-    fi
-    if [ "${ssr_install_flag}" == "true" ]; then
-        echo "-------------------- ShadowsocksR Setting --------------------"
-        echo -e "SSR configure file         : ${COLOR_GREEN}${ssr_config}${COLOR_END}"
-        echo -e "SSR Server Port            : ${COLOR_GREEN}${set_ssr_port}${COLOR_END}"
-        echo -e "SSR Password               : ${COLOR_GREEN}${set_ssr_pwd}${COLOR_END}"
-        echo -e "SSR Encryption Method      : ${COLOR_GREEN}${set_ssr_method}${COLOR_END}"
-        echo -e "SSR protocol               : ${COLOR_GREEN}${set_ssr_protocol}${COLOR_END}"
-        echo -e "SSR obfs                   : ${COLOR_GREEN}${set_ssr_obfs}${COLOR_END}"
-        #echo -e "SSR Local IP               : ${COLOR_GREEN}127.0.0.1${COLOR_END}"
-        #echo -e "SSR Local Port             : ${COLOR_GREEN}${ssr_local_port}${COLOR_END}"
-        echo "----------------------------------------------------------"
-        echo -e "SSR status manage: ${COLOR_PINK}/etc/init.d/ssr${COLOR_END} {${COLOR_GREEN}start|stop|restart|status|config|version${COLOR_END}}"
-        echo "=========================================================="
-    fi
     if [ "${kcptun_install_flag}" == "true" ]; then
         echo "-------------------- KCPTUN Setting --------------------"
         echo -e "Kcptun configure file     : ${COLOR_GREEN}${kcptun_config}${COLOR_END}"
@@ -816,7 +775,7 @@ show_kcptun_for_ss_ssr(){
     echo
 }
 pre_install_kcptun_for_ss_ssr(){
-    fun_clangcn "clear"
+    fire_check "clear"
     get_install_version
     Dispaly_Selection
     Press_Install
@@ -824,347 +783,6 @@ pre_install_kcptun_for_ss_ssr(){
     Disable_Selinux
     check_kcptun_for_ss_ssr_installed
     cd ${cur_dir}
-    ###############################   SS-libev   ###############################
-    if [ "${ss_libev_installed_flag}" == "false" ]; then
-        echo
-        echo "=========================================================="
-        echo -e "${COLOR_PINK}Please input your SS-libev setting:${COLOR_END}"
-        echo
-        # Set shadowsocks-libev password
-        def_ss_libev_pwd=`fun_randstr`
-        echo "Please input password for shadowsocks-libev"
-        read -p "(Default password: ${def_ss_libev_pwd}):" set_ss_libev_pwd
-        [ -z "${set_ss_libev_pwd}" ] && set_ss_libev_pwd="${def_ss_libev_pwd}"
-        echo
-        echo "---------------------------------------"
-        echo "SS-libev password = ${set_ss_libev_pwd}"
-        echo "---------------------------------------"
-        echo
-        # Set shadowsocks-libev port
-        while true
-        do
-            def_ss_libev_port="18989"
-            echo -e "Please input port for shadowsocks-libev [1-65535]"
-            read -p "(Default port: ${def_ss_libev_port}):" set_ss_libev_port
-            [ -z "$set_ss_libev_port" ] && set_ss_libev_port="${def_ss_libev_port}"
-            expr ${set_ss_libev_port} + 0 &>/dev/null
-            if [ $? -eq 0 ]; then
-                if [ ${set_ss_libev_port} -ge 1 ] && [ ${set_ss_libev_port} -le 65535 ]; then
-                    echo
-                    echo "---------------------------------------"
-                    echo "SS-libev port = ${set_ss_libev_port}"
-                    echo "---------------------------------------"
-                    echo
-                    break
-                else
-                    echo "Input error, please input correct number"
-                fi
-            else
-                echo "Input error, please input correct number"
-            fi
-        done
-        ss_libev_local_port="1086"
-        def_ss_libev_method="aes-256-cfb"
-        echo -e "Please select method for shadowsocks-libev"
-        echo "  1: rc4-md5"
-        echo "  2: aes-128-gcm"
-        echo "  3: aes-192-gcm"
-        echo "  4: aes-256-gcm"
-        echo "  5: aes-128-cfb"
-        echo "  6: aes-192-cfb"
-        echo "  7: aes-256-cfb (default)"
-        echo "  8: aes-128-ctr"
-        echo "  9: aes-192-ctr"
-        echo " 10: aes-256-ctr"
-        echo " 11: camellia-128-cfb"
-        echo " 12: camellia-192-cfb"
-        echo " 13: camellia-256-cfb"
-        echo " 14: bf-cfb"
-        echo " 15: chacha20-ietf-poly1305"
-        echo " 16: salsa20"
-        echo " 17: chacha20"
-        echo " 18: chacha20-ietf"
-        read -p "Enter your choice (1, 2, 3, ... or exit. default [${def_ss_libev_method}]): " set_ss_libev_method
-        case "${set_ss_libev_method}" in
-            1|[Rr][Cc]4-[Mm][Dd]5)
-                set_ss_libev_method="rc4-md5"
-                ;;
-            2|[Aa][Ee][Ss]-128-[Gg][Cc][Mm])
-                set_ss_libev_method="aes-128-gcm"
-                ;;
-            3|[Aa][Ee][Ss]-192-[Gg][Cc][Mm])
-                set_ss_libev_method="aes-192-gcm"
-                ;;
-            4|[Aa][Ee][Ss]-256-[Gg][Cc][Mm])
-                set_ss_libev_method="aes-256-gcm"
-                ;;
-            5|[Aa][Ee][Ss]-128-[Cc][Ff][Bb])
-                set_ss_libev_method="aes-128-cfb"
-                ;;
-            6|[Aa][Ee][Ss]-192-[Cc][Ff][Bb])
-                set_ss_libev_method="aes-192-cfb"
-                ;;
-            7|[Aa][Ee][Ss]-256-[Cc][Ff][Bb])
-                set_ss_libev_method="aes-256-cfb"
-                ;;
-            8|[Aa][Ee][Ss]-128-[Cc][Tt][Rr])
-                set_ss_libev_method="aes-128-ctr"
-                ;;
-            9|[Aa][Ee][Ss]-192-[Cc][Tt][Rr])
-                set_ss_libev_method="aes-192-ctr"
-                ;;
-            10|[Aa][Ee][Ss]-256-[Cc][Tt][Rr])
-                set_ss_libev_method="aes-256-ctr"
-                ;;
-            11|[Cc][Aa][Mm][Ee][Ll][Ll][Ii][Aa]-128-[Cc][Ff][Bb])
-                set_ss_libev_method="camellia-128-cfb"
-                ;;
-            12|[Cc][Aa][Mm][Ee][Ll][Ll][Ii][Aa]-192-[Cc][Ff][Bb])
-                set_ss_libev_method="camellia-192-cfb"
-                ;;
-            13|[Cc][Aa][Mm][Ee][Ll][Ll][Ii][Aa]-256-[Cc][Ff][Bb])
-                set_ss_libev_method="camellia-256-cfb"
-                ;;
-            14|[Bb][Ff]-[Cc][Ff][Bb])
-                set_ss_libev_method="bf-cfb"
-                ;;
-            15|[Cc][Hh][Aa][Cc][Hh][Aa]20-[Ii][Ee][Tt][Ff]-[Pp][Oo][Ll][Yy]1305)
-                set_ss_libev_method="chacha20-ietf-poly1305"
-                ;;
-            16|[Ss][Aa][Ll][As][Aa]20)
-                set_ss_libev_method="salsa20"
-                ;;
-            17|[Cc][Hh][Aa][Cc][Hh][Aa]20)
-                set_ss_libev_method="chacha20"
-                ;;
-            18|[Cc][Hh][Aa][Cc][Hh][Aa]20-[Ii][Ee][Tt][Ff])
-                set_ss_libev_method="chacha20-ietf"
-                ;;
-            [eE][xX][iI][tT])
-                exit 1
-                ;;
-            *)
-                set_ss_libev_method="${def_ss_libev_method}"
-                ;;
-        esac
-        echo
-        echo "---------------------------------------"
-        echo "SS-libev method: ${set_ss_libev_method}"
-        echo "---------------------------------------"
-        echo
-        echo "=========================================================="
-    elif [ "${ss_libev_installed_flag}" == "true" ]; then
-        echo
-        echo -e "${COLOR_PINK}Shadowsocks-libev has been installed, nothing to do...${COLOR_END}"
-        [ "${Install_Select}" == "1" ] && exit 0
-    fi
-    ###############################   ShadowsocksR   ###############################
-    if [ "${ssr_installed_flag}" == "false" ]; then
-        echo
-        echo "=========================================================="
-        echo -e "${COLOR_PINK}Please input your ShadowsocksR(SSR) setting:${COLOR_END}"
-        echo
-        # Set shadowsocksR password
-        def_ssr_pwd=`fun_randstr`
-        echo "Please input password for shadowsocksR"
-        read -p "(Default password: ${def_ssr_pwd}):" set_ssr_pwd
-        [ -z "${set_ssr_pwd}" ] && set_ssr_pwd="${def_ssr_pwd}"
-        echo
-        echo "---------------------------------------"
-        echo "SSR password = ${set_ssr_pwd}"
-        echo "---------------------------------------"
-        echo
-        # Set shadowsocksR port
-        while true
-        do
-            def_ssr_port="28989"
-            echo -e "Please input port for shadowsocksR [1-65535]"
-            read -p "(Default port: ${def_ssr_port}):" set_ssr_port
-            [ -z "$set_ssr_port" ] && set_ssr_port="${def_ssr_port}"
-            expr ${set_ssr_port} + 0 &>/dev/null
-            if [ $? -eq 0 ]; then
-                if [ ${set_ssr_port} -ge 1 ] && [ ${set_ssr_port} -le 65535 ]; then
-                    echo
-                    echo "---------------------------------------"
-                    echo "SSR port = ${set_ssr_port}"
-                    echo "---------------------------------------"
-                    echo
-                    break
-                else
-                    echo "Input error, please input correct number"
-                fi
-            else
-                echo "Input error, please input correct number"
-            fi
-        done
-        ssr_local_port="1088"
-        #mujson_mgr.py
-        def_ssr_method="aes-256-cfb"
-        echo -e "Please select encryption method for shadowsocksR"
-        echo "  1: aes-128-cfb"
-        echo "  2: aes-192-cfb"
-        echo "  3: aes-256-cfb (default)"
-        echo "  4: rc4-md5"
-        echo "  5: rc4-md5-6"
-        echo "  6: chacha20"
-        echo "  7: chacha20-ietf"
-        echo "  8: salsa20"
-        echo "  9: bf-cfb"
-        echo " 10: camellia-128-cfb"
-        echo " 11: camellia-192-cfb"
-        echo " 12: camellia-256-cfb"
-        echo " 13: aes-128-ctr"
-        echo " 14: aes-192-ctr"
-        echo " 15: aes-256-ctr"
-        read -p "Enter your choice (1, 2, 3, ... or exit. default [${def_ssr_method}]): " set_ssr_method
-        case "${set_ssr_method}" in
-            1|[Aa][Ee][Ss]-128-[Cc][Ff][Bb])
-                set_ssr_method="aes-128-cfb"
-                ;;
-            2|[Aa][Ee][Ss]-192-[Cc][Ff][Bb])
-                set_ssr_method="aes-192-cfb"
-                ;;
-            3|[Aa][Ee][Ss]-256-[Cc][Ff][Bb])
-                set_ssr_method="aes-256-cfb"
-                ;;
-            4|[Rr][Cc]4-[Mm][Dd]5)
-                set_ssr_method="rc4-md5"
-                ;;
-            5|[Rr][Cc]4-[Mm][Dd]5-6)
-                set_ssr_method="rc4-md5-6"
-                ;;
-            6|[Cc][Hh][Aa][Cc][Hh][Aa]20)
-                set_ssr_method="chacha20"
-                ;;
-            7|[Cc][Hh][Aa][Cc][Hh][Aa]20-[Ii][Ee][Tt][Ff])
-                set_ssr_method="chacha20-ietf"
-                ;;
-            8|[Ss][Aa][Ll][As][Aa]20)
-                set_ssr_method="salsa20"
-                ;;
-            9|[Bb][Ff]-[Cc][Ff][Bb])
-                set_ssr_method="bf-cfb"
-                ;;
-            10|[Cc][Aa][Mm][Ee][Ll][Ll][Ii][Aa]-128-[Cc][Ff][Bb])
-                set_ssr_method="camellia-128-cfb"
-                ;;
-            11|[Cc][Aa][Mm][Ee][Ll][Ll][Ii][Aa]-192-[Cc][Ff][Bb])
-                set_ssr_method="camellia-192-cfb"
-                ;;
-            12|[Cc][Aa][Mm][Ee][Ll][Ll][Ii][Aa]-256-[Cc][Ff][Bb])
-                set_ssr_method="camellia-256-cfb"
-                ;;
-            13|[Aa][Ee][Ss]-128-[Cc][Tt][Rr])
-                set_ssr_method="aes-128-ctr"
-                ;;
-            14|[Aa][Ee][Ss]-192-[Cc][Tt][Rr])
-                set_ssr_method="aes-192-ctr"
-                ;;
-            15|[Aa][Ee][Ss]-256-[Cc][Tt][Rr])
-                set_ssr_method="aes-256-ctr"
-                ;;
-            [eE][xX][iI][tT])
-                exit 1
-                ;;
-            *)
-                set_ssr_method="${def_ssr_method}"
-                ;;
-        esac
-        echo
-        echo "---------------------------------------"
-        echo "SSR method: ${set_ssr_method}"
-        echo "---------------------------------------"
-        echo
-        def_ssr_protocol="origin"
-        echo -e "Please select Protocol plugin for shadowsocksR"
-        echo "  1: origin (default)"
-        echo "  2: verify_sha1_compatible"
-        echo "  3: verify_sha1"
-        echo "  4: auth_sha1"
-        echo "  5: auth_sha1_v2"
-        echo "  6: auth_sha1_v4"
-        echo "  7: auth_aes128_md5"
-        echo "  8: auth_aes128_sha1"
-        read -p "Enter your choice (1, 2, 3, ... or exit. default [${def_ssr_protocol}]): " set_ssr_protocol
-        case "${set_ssr_protocol}" in
-            1|[Oo][Rr][Ii][Gg][Ii][Nn])
-                set_ssr_protocol="origin"
-                ;;
-            2|[Vv][Ee][Rr][Ii][Ff][Yy]_[Ss][Hh][Aa]1_[Cc][Oo][Mm][Pp][Aa][Tt][Ii][Bb][Ll][Ee])
-                set_ssr_protocol="verify_sha1_compatible"
-                ;;
-            3|[Vv][Ee][Rr][Ii][Ff][Yy]_[Ss][Hh][Aa]1)
-                set_ssr_protocol="verify_sha1"
-                ;;
-            4|[Aa][Uu][Tt][Hh]_[Ss][Hh][Aa]1)
-                set_ssr_protocol="auth_sha1"
-                ;;
-            5|[Aa][Uu][Tt][Hh]_[Ss][Hh][Aa]1_[Vv]2)
-                set_ssr_protocol="auth_sha1_v2"
-                ;;
-            6|[Aa][Uu][Tt][Hh]_[Ss][Hh][Aa]1_[Vv]4)
-                set_ssr_protocol="auth_sha1_v4"
-                ;;
-            7|[Aa][Uu][Tt][Hh]_[Aa][Ee][Ss]128_[Mm][Dd]5)
-                set_ssr_protocol="auth_aes128_md5"
-                ;;
-            8|[Aa][Uu][Tt][Hh]_[Aa][Ee][Ss]128_[Ss][Hh][Aa]5)
-                set_ssr_protocol="auth_aes128_sha1"
-                ;;
-            [eE][xX][iI][tT])
-                exit 1
-                ;;
-            *)
-                set_ssr_protocol="${def_ssr_protocol}"
-                ;;
-        esac
-        echo
-        echo "---------------------------------------"
-        echo "SSR Protocol: ${set_ssr_protocol}"
-        echo "---------------------------------------"
-        echo
-        def_ssr_obfs="plain"
-        echo -e "Please select Obfs plugin for shadowsocksR"
-        echo "  1: plain (default)"
-        echo "  2: http_simple_compatible"
-        echo "  3: http_simple"
-        echo "  4: tls1.2_ticket_auth_compatible"
-        echo "  5: tls1.2_ticket_auth"
-        read -p "Enter your choice (1, 2, 3, ... or exit. default [${def_ssr_obfs}]): " set_ssr_obfs
-        case "${set_ssr_obfs}" in
-            1|[Pp][Ll][Aa][Ii][Nn])
-                set_ssr_obfs="plain"
-                ;;
-            2|[Hh][Tt][Tt][Pp]_[Ss][Ii][Mm][Pp][Ll][Ee]_[Cc][Oo][Mm][Pp][Aa][Tt][Ii][Bb][Ll][Ee])
-                set_ssr_obfs="http_simple_compatible"
-                ;;
-            3|[Hh][Tt][Tt][Pp]_[Ss][Ii][Mm][Pp][Ll][Ee])
-                set_ssr_obfs="http_simple"
-                ;;
-            4|[Tt][Ll][Ss]1.2_[Tt][Ii][Cc][Kk][Ee][Tt]_[Aa][Uu][Tt][Hh]_[Cc][Oo][Mm][Pp][Aa][Tt][Ii][Bb][Ll][Ee])
-                set_ssr_obfs="tls1.2_ticket_auth_compatible"
-                ;;
-            5|[Tt][Ll][Ss]1.2_[Tt][Ii][Cc][Kk][Ee][Tt]_[Aa][Uu][Tt][Hh])
-                set_ssr_obfs="tls1.2_ticket_auth"
-                ;;
-            [eE][xX][iI][tT])
-                exit 1
-                ;;
-            *)
-                set_ssr_obfs="${def_ssr_obfs}"
-                ;;
-        esac
-        echo
-        echo "---------------------------------------"
-        echo "SSR obfs: ${set_ssr_obfs}"
-        echo "---------------------------------------"
-        echo
-        echo "=========================================================="
-    elif [ "${ssr_installed_flag}" == "true" ]; then
-        echo
-        echo -e "${COLOR_PINK}ShadowsocksR has been installed, nothing to do...${COLOR_END}"
-        [ "${Install_Select}" == "2" ] && exit 0
-    fi
     ###############################   KCPTUN   ###############################
     if [ "${kcptun_installed_flag}" == "false" ]; then
         echo
@@ -1393,101 +1011,28 @@ pre_install_kcptun_for_ss_ssr(){
 uninstall_kcptun_for_ss_ssr(){
     Get_Dist_Name
     fun_clangcn "clear"
-    def_Uninstall_Select="4"
-    echo -e "${COLOR_YELOW}You have 5 options for your kcptun/ss/ssr Uninstall${COLOR_END}"
-    echo "1: Uninstall Shadowsocks-libev"
-    echo "2: Uninstall ShadowsocksR(python)"
-    echo "3: Uninstall KCPTUN"
-    echo "4: Uninstall All[default]"
-    echo "5: Exit,cancell uninstall"
-    read -p "Enter your choice (1, 2, 3, ... or exit. default [${def_Uninstall_Select}]): " Uninstall_Select
+    def_Uninstall_Select="1"
+    echo -e "${COLOR_YELOW}You have 2 options for your kcptun/ss/ssr Uninstall${COLOR_END}"
+    echo "1: Uninstall KCPTUN"
+    echo "2: Exit,cancell uninstall"
+    read -p "Enter your choice (1, 2, or exit. default [${def_Uninstall_Select}]): " Uninstall_Select
     case "${Uninstall_Select}" in
     1)
         echo
-        echo -e "${COLOR_PINK}You will Uninstall Shadowsocks-libev${COLOR_END}"
-        ;;
-    2)
-        echo
-        echo -e "${COLOR_PINK}You will Uninstall ShadowsocksR(python)${COLOR_END}"
-        ;;
-    3)
-        echo
         echo -e "${COLOR_PINK}You will Uninstall KCPTUN${COLOR_END}"
         ;;
-    4)
-        echo
-        echo -e "${COLOR_PINK}You will Uninstall All${COLOR_END}"
-        ;;
-    5|[eE][xX][iI][tT])
+    2|[eE][xX][iI][tT])
         echo -e "${COLOR_PINK}You select <Exit>, shell exit now!${COLOR_END}"
         exit 1
         ;;
     *)
         echo
-        echo -e "${COLOR_PINK}No input,default select <Uninstall All>, shell exit now!${COLOR_END}"
+        echo -e "${COLOR_PINK}No input,default select <Exit,cancell uninstall>, shell exit now!${COLOR_END}"
         exit 1
     esac
     Press_Start
     check_kcptun_for_ss_ssr_installed
-    if [ "${Uninstall_Select}" == "1" ] || [ "${Uninstall_Select}" == "4" ]; then
-        if [ "${ss_libev_installed_flag}" == "true" ]; then
-            ps -ef | grep -v grep | grep -i "ss-server" > /dev/null 2>&1
-            if [ $? -eq 0 ]; then
-                /etc/init.d/shadowsocks stop
-            fi
-            if check_sys packageManager yum; then
-                chkconfig --del shadowsocks
-            elif check_sys packageManager apt; then
-                update-rc.d -f shadowsocks remove
-            fi
-            rm -fr /etc/shadowsocks-libev
-            rm -f /usr/local/bin/ss-local
-            rm -f /usr/local/bin/ss-tunnel
-            rm -f /usr/local/bin/ss-server
-            rm -f /usr/local/bin/ss-manager
-            rm -f /usr/local/bin/ss-redir
-            rm -f /usr/local/bin/ss-nat
-            rm -f /usr/local/lib/libshadowsocks-libev.a
-            rm -f /usr/local/lib/libshadowsocks-libev.la
-            rm -f /usr/local/include/shadowsocks.h
-            rm -f /usr/local/lib/pkgconfig/shadowsocks-libev.pc
-            rm -f /usr/local/share/man/man1/ss-local.1
-            rm -f /usr/local/share/man/man1/ss-tunnel.1
-            rm -f /usr/local/share/man/man1/ss-server.1
-            rm -f /usr/local/share/man/man1/ss-manager.1
-            rm -f /usr/local/share/man/man1/ss-redir.1
-            rm -f /usr/local/share/man/man1/ss-nat.1
-            rm -f /usr/local/share/man/man8/shadowsocks-libev.8
-            rm -fr /usr/local/share/doc/shadowsocks-libev
-            rm -f /usr/bin/shadowsocks
-            rm -f /etc/init.d/shadowsocks
-            echo -e "${COLOR_GREEN}Shadowsocks-libev uninstall success!${COLOR_END}"
-        else
-            echo -e "${COLOR_GREEN}Shadowsocks-libev not install!${COLOR_END}"
-        fi
-    fi
-    if [ "${Uninstall_Select}" == "2" ] || [ "${Uninstall_Select}" == "4" ]; then
-        if [ "${ssr_installed_flag}" == "true" ]; then
-            /etc/init.d/ssr status > /dev/null 2>&1
-            if [ $? -eq 0 ]; then
-                /etc/init.d/ssr stop
-            fi
-            if check_sys packageManager yum; then
-                chkconfig --del ssr
-            elif check_sys packageManager apt; then
-                update-rc.d -f ssr remove
-            fi
-            rm -f ${ssr_config}
-            rm -f /usr/bin/ssr
-            rm -f /etc/init.d/ssr
-            rm -f /var/log/shadowsocksR.log
-            rm -rf /usr/local/shadowsocksR
-            echo -e "${COLOR_GREEN}ShadowsocksR uninstall success!${COLOR_END}"
-        else
-            echo -e "${COLOR_GREEN}ShadowsocksR not install!${COLOR_END}"
-        fi
-    fi
-    if [ "${Uninstall_Select}" == "3" ] || [ "${Uninstall_Select}" == "4" ]; then
+    if [ "${Uninstall_Select}" == "1" ]; then
         if [ "${kcptun_installed_flag}" == "true" ]; then
             /etc/init.d/kcptun status > /dev/null 2>&1
             if [ $? -eq 0 ]; then
@@ -1510,197 +1055,11 @@ uninstall_kcptun_for_ss_ssr(){
     fi
 }
 configure_kcptun_for_ss_ssr(){
-    if [ -f ${ss_libev_config} ]; then
-        echo -e "Shadowsocks-libev config file: ${COLOR_GREEN}${ss_libev_config}${COLOR_END}"
-    fi
-    if [ -f ${ssr_config} ]; then
-        echo -e "ShadowsocksR config file:  ${COLOR_GREEN}${ssr_config}${COLOR_END}"
-    fi
     if [ -f ${kcptun_config} ]; then
         echo -e "Kcptun config file: ${COLOR_GREEN}${kcptun_config}${COLOR_END}"
     fi
 }
-update_kcptun_for_ss_ssr(){
-    ss_libev_update_flag="false"
-    ssr_update_flag="false"
-    kcptun_update_flag="false"
-    fun_clangcn "clear"
-    echo -e "${COLOR_YELOW}You have 5 options for your kcptun/ss/ssr update.${COLOR_END}"
-    echo "1: Update Shadowsocks-libev"
-    echo "2: Update ShadowsocksR(python)"
-    echo "3: Update KCPTUN"
-    echo "4: Update All"
-    echo "Exit (default)"
-    read -p "Enter your choice (1, 2, 3, 4 or exit. default [exit]): " Update_Select
 
-    case "${Update_Select}" in
-    1)
-        echo
-        echo -e "${COLOR_PINK}You will update Shadowsocks-libev${COLOR_END}"
-        ;;
-    2)
-        echo
-        echo -e "${COLOR_PINK}You will update ShadowsocksR(python)${COLOR_END}"
-        ;;
-    3)
-        echo
-        echo -e "${COLOR_PINK}You will update KCPTUN${COLOR_END}"
-        ;;
-    4)
-        echo
-        echo -e "${COLOR_PINK}You will update All${COLOR_END}"
-        ;;
-    *)
-        echo -e "${COLOR_PINK}You select <Exit>, shell exit now!${COLOR_END}"
-        exit 1
-        ;;
-    esac
-    check_kcptun_for_ss_ssr_installed
-    get_install_version
-    get_latest_version
-    if [[ "${Update_Select}" == "1" || "${Update_Select}" == "4" ]]; then
-        echo "+-------------------------------------------------------------+"
-        if [ "${ss_libev_installed_flag}" == "true" ]; then
-            ss_libev_local_ver=$(ss-server --help | grep -i "shadowsocks-libev" | awk '{print $2}')
-            if [ -z ${ss_libev_local_ver} ] || [ -z ${SS_LIBEV_VER} ]; then
-                echo -e "${COLOR_RED}Error: Get shadowsocks-libev shell version failed${COLOR_END}"
-            else
-                echo -e "Shadowsocks-libev shell version : ${COLOR_GREEN}${SS_LIBEV_VER}${COLOR_END}"
-                echo -e "Shadowsocks-libev local version : ${COLOR_GREEN}${ss_libev_local_ver}${COLOR_END}"
-                if [[ "${ss_libev_local_ver}" != "${SS_LIBEV_VER}" ]];then
-                    ss_libev_update_flag="true"
-                else
-                    echo "Shadowsocks-libev local version is up-to-date."
-                fi
-            fi
-        else
-            echo -e "${COLOR_RED}Shadowsocks-libev not install!${COLOR_END}"
-        fi
-    fi
-    if [[ "${Update_Select}" == "2" || "${Update_Select}" == "4" ]]; then
-        echo "+-------------------------------------------------------------+"
-        if [ "${ssr_installed_flag}" == "true" ]; then
-            ssr_local_ver=$(ssr version | grep -i "shadowsocksr" | awk '{print $2}')
-            if [ -z ${ssr_local_ver} ] || [ -z ${SSR_VER} ]; then
-                echo -e "${COLOR_RED}Error: Get ShadowsocksR shell version failed${COLOR_END}"
-            else
-                echo -e "ShadowsocksR shell version : ${COLOR_GREEN}${SSR_VER}${COLOR_END}"
-                echo -e "ShadowsocksR local version : ${COLOR_GREEN}${ssr_local_ver}${COLOR_END}"
-                if [[ "${ssr_local_ver}" != "${SSR_VER}" ]];then
-                    ssr_update_flag="true"
-                else
-                    echo "ShadowsocksR local version is up-to-date."
-                fi
-            fi
-        else
-            echo -e "${COLOR_RED}ShadowsocksR not install!${COLOR_END}"
-        fi
-    fi
-    if [[ "${Update_Select}" == "3" || "${Update_Select}" == "4" ]]; then
-        echo "+-------------------------------------------------------------+"
-        if [ "${kcptun_installed_flag}" == "true" ]; then
-            kcptun_local_ver=$(/usr/local/kcptun/kcptun --version | awk '{print $3}')
-            if [ -z ${kcptun_local_ver} ] || [ -z ${KCPTUN_VER} ]; then
-                echo -e "${COLOR_RED}Error: Get Kcptun shell version failed${COLOR_END}"
-            else
-                echo -e "Kcptun shell version : ${COLOR_GREEN}${KCPTUN_VER}${COLOR_END}"
-                echo -e "Kcptun local version : ${COLOR_GREEN}${kcptun_local_ver}${COLOR_END}"
-                if [[ "${kcptun_local_ver}" != "${KCPTUN_VER}" ]];then
-                    kcptun_update_flag="true"
-                else
-                    echo "Kcptun local version is up-to-date."
-                fi
-            fi
-        else
-            echo -e "${COLOR_RED}Kcptun not install!${COLOR_END}"
-        fi
-    fi
-    if [[ "${ss_libev_update_flag}" == "true" || "${ssr_update_flag}" == "true" || "${kcptun_update_flag}" == "true" ]]; then
-        echo "+-------------------------------------------------------------+"
-        echo -e "${COLOR_GREEN}Found a new version,update now...${COLOR_END}"
-        Press_Start
-    fi
-    if [[ "${ss_libev_installed_flag}" == "true" && "${ss_libev_update_flag}" == "true" ]]; then
-        ps -ef | grep -v grep | grep -i "ss-server" > /dev/null 2>&1
-        if [ $? -eq 0 ]; then
-            /etc/init.d/shadowsocks stop
-        fi
-        if check_sys packageManager yum; then
-            chkconfig --del shadowsocks
-        elif check_sys packageManager apt; then
-            update-rc.d -f shadowsocks remove
-        fi
-        rm -f /usr/local/bin/ss-local
-        rm -f /usr/local/bin/ss-tunnel
-        rm -f /usr/local/bin/ss-server
-        rm -f /usr/local/bin/ss-manager
-        rm -f /usr/local/bin/ss-redir
-        rm -f /usr/local/bin/ss-nat
-        rm -f /usr/local/lib/libshadowsocks-libev.a
-        rm -f /usr/local/lib/libshadowsocks-libev.la
-        rm -f /usr/local/include/shadowsocks.h
-        rm -f /usr/local/lib/pkgconfig/shadowsocks-libev.pc
-        rm -f /usr/local/share/man/man1/ss-local.1
-        rm -f /usr/local/share/man/man1/ss-tunnel.1
-        rm -f /usr/local/share/man/man1/ss-server.1
-        rm -f /usr/local/share/man/man1/ss-manager.1
-        rm -f /usr/local/share/man/man1/ss-redir.1
-        rm -f /usr/local/share/man/man1/ss-nat.1
-        rm -f /usr/local/share/man/man8/shadowsocks-libev.8
-        rm -fr /usr/local/share/doc/shadowsocks-libev
-        rm -f /usr/bin/shadowsocks
-        rm -f /etc/init.d/shadowsocks
-    fi
-    if [[ "${ssr_installed_flag}" == "true" && "${ssr_update_flag}" == "true" ]]; then
-        /etc/init.d/ssr status > /dev/null 2>&1
-        if [ $? -eq 0 ]; then
-            /etc/init.d/ssr stop
-        fi
-        if check_sys packageManager yum; then
-            chkconfig --del ssr
-        elif check_sys packageManager apt; then
-            update-rc.d -f ssr remove
-        fi
-        rm -f /usr/bin/ssr
-        rm -f /etc/init.d/ssr
-        rm -f /var/log/shadowsocksR.log
-        rm -rf /usr/local/shadowsocksR/shadowsocks
-    fi
-    if [[ "${kcptun_installed_flag}" == "true" && "${kcptun_update_flag}" == "true" ]]; then
-        /etc/init.d/kcptun status > /dev/null 2>&1
-        if [ $? -eq 0 ]; then
-            /etc/init.d/kcptun stop
-        fi
-        if check_sys packageManager yum; then
-            chkconfig --del kcptun
-        elif check_sys packageManager apt; then
-            update-rc.d -f kcptun remove
-        fi
-        rm -f /usr/bin/kcptun
-        rm -f /etc/init.d/kcptun
-        rm -f /var/log/kcptun.log
-        rm -f /usr/local/kcptun/kcptun
-    fi
-    if [[ "${ss_libev_update_flag}" == "true" || "${ssr_update_flag}" == "true" || "${kcptun_update_flag}" == "true" ]]; then
-        down_kcptun_for_ss_ssr
-        install_kcptun_for_ss_ssr
-        install_cleanup
-    else
-        echo
-        echo -e "nothing to do..."
-        echo
-        exit 1
-    fi
-    if [[ "${kcptun_install_flag}" == "true" || "${ss_libev_install_flag}" == "true" || "${ssr_install_flag}" == "true" ]]; then
-        fun_clangcn
-        echo "Congratulations, update completed, Enjoy it!"
-        echo
-    else
-        echo
-        echo -e "${COLOR_RED}Update failed! Please visit ${contact_us} and contact.${COLOR_END}"
-        exit 1
-    fi
-}
 fun_set_text_color
 # Initialization
 clang_action=$1
@@ -1726,7 +1085,7 @@ case "${clang_action}" in
     update_kcptun_for_ss_ssr 2>&1 | tee ${cur_dir}/ss-ssr-kcptun-update.log
     ;;
 *)
-    fun_clangcn "clear"
+    fire_check "clear"
     echo "Arguments error! [${clang_action}]"
     echo "Usage: `basename $0` {install|uninstall|update|config}"
     ;;
