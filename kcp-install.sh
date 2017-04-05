@@ -35,7 +35,7 @@ shell_update(){
         fi
     fi
 }
-shell_download_link="https://raw.githubusercontent.com/FIREU666/onekey-kcp/master/kcptun_for_ss_ssr-install.sh"
+shell_download_link="https://raw.githubusercontent.com/FIREU666/onekey-kcp/master/kcp-install.sh"
 program_version_link="https://raw.githubusercontent.com/FIREU666/onekey-kcp/master/version.sh"
 ss_libev_config="/etc/shadowsocks-libev/config.json"
 ssr_config="/usr/local/shadowsocksR/shadowsocksR.json"
