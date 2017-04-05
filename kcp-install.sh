@@ -274,33 +274,13 @@ get_ip(){
 Dispaly_Selection(){
     def_Install_Select="3"
     echo -e "${COLOR_YELOW}You have 5 options for your kcptun/ss/ssr install.${COLOR_END}"
-    echo "1: Install Shadowsocks-libev"
-    echo "2: Install ShadowsocksR(python)"
     echo "3: Install KCPTUN [default]"
-    echo "4: Install Shadowsocks-libev + KCPTUN"
-    echo "5: Install ShadowsocksR(python) + KCPTUN"
     read -p "Enter your choice (1, 2, 3, 4, 5 or exit. default [${def_Install_Select}]): " Install_Select
 
     case "${Install_Select}" in
-    1)
-        echo
-        echo -e "${COLOR_PINK}You will install Shadowsocks-libev ${SS_LIBEV_VER}${COLOR_END}"
-        ;;
-    2)
-        echo
-        echo -e "${COLOR_PINK}You will install ShadowsocksR(python) ${SSR_VER}${COLOR_END}"
-        ;;
     3)
         echo
         echo -e "${COLOR_PINK}You will install KCPTUN ${KCPTUN_VER}${COLOR_END}"
-        ;;
-    4)
-        echo
-        echo -e "${COLOR_PINK}You will Install Shadowsocks-libev ${SS_LIBEV_VER} + KCPTUN ${KCPTUN_VER}${COLOR_END}"
-        ;;
-    5)
-        echo
-        echo -e "${COLOR_PINK}You will install ShadowsocksR(python) ${SSR_VER} + KCPTUN ${KCPTUN_VER}${COLOR_END}"
         ;;
     [eE][xX][iI][tT])
         echo -e "${COLOR_PINK}You select <Exit>, shell exit now!${COLOR_END}"
@@ -324,21 +304,7 @@ check_kcptun_for_ss_ssr_installed(){
     kcptun_install_flag=""
     ss_libev_install_flag=""
     ssr_install_flag=""
-    if [ "${Install_Select}" == "1" ] || [ "${Install_Select}" == "4" ] || [ "${Update_Select}" == "1" ] || [ "${Update_Select}" == "4" ] || [ "${Uninstall_Select}" == "1" ] || [ "${Uninstall_Select}" == "4" ]; then
-        if [[ "$(command -v "ss-server")" ]] || [[ "$(command -v "/usr/local/bin/ss-server")" ]]; then
-            ss_libev_installed_flag="true"
-        else
-            ss_libev_installed_flag="false"
-        fi
-    fi
-    if [ "${Install_Select}" == "2" ] || [ "${Install_Select}" == "5" ] || [ "${Update_Select}" == "2" ] || [ "${Update_Select}" == "4" ] || [ "${Uninstall_Select}" == "2" ] || [ "${Uninstall_Select}" == "4" ]; then
-        if [[ -x /usr/local/shadowsocksR/shadowsocks/server.py ]] && [[ -s /usr/local/shadowsocksR/shadowsocks/__init__.py ]]; then
-            ssr_installed_flag="true"
-        else
-            ssr_installed_flag="false"
-        fi
-    fi
-    if [ "${Install_Select}" == "3" ] || [ "${Install_Select}" == "4" ] || [ "${Install_Select}" == "5" ] || [ "${Update_Select}" == "3" ] || [ "${Update_Select}" == "4" ] || [ "${Uninstall_Select}" == "3" ] || [ "${Uninstall_Select}" == "4" ]; then
+    if [ "${Install_Select}" == "3" ] || [ "${Update_Select}" == "3" ] || [ "${Update_Select}" == "4" ] || [ "${Uninstall_Select}" == "3" ] || [ "${Uninstall_Select}" == "4" ]; then
         if [[ "$(command -v "/usr/local/kcptun/kcptun")" ]] || [[ "$(command -v "kcptun")" ]]; then
             kcptun_installed_flag="true"
         else
