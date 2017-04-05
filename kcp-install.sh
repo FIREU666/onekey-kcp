@@ -35,8 +35,8 @@ shell_update(){
         fi
     fi
 }
-shell_download_link="https://raw.githubusercontent.com/onekeyshell/kcptun_for_ss_ssr/master/kcptun_for_ss_ssr-install.sh"
-program_version_link="https://raw.githubusercontent.com/onekeyshell/kcptun_for_ss_ssr/master/version.sh"
+shell_download_link="https://raw.githubusercontent.com/FIREU666/onekey-kcp/master/kcp-install.sh"
+program_version_link="https://raw.githubusercontent.com/FIREU666/onekey-kcp/master/version.sh"
 ss_libev_config="/etc/shadowsocks-libev/config.json"
 ssr_config="/usr/local/shadowsocksR/shadowsocksR.json"
 kcptun_config="/usr/local/kcptun/config.json"
@@ -272,13 +272,13 @@ get_ip(){
     [ ! -z ${IP} ] && echo ${IP} || echo
 }
 Dispaly_Selection(){
-    def_Install_Select="5"
-    echo -e "${COLOR_YELOW}You have 5 options for your kcptun/ss/ssr install.${COLOR_END}"
-    echo "1: Install Shadowsocks-libev"
-    echo "2: Install ShadowsocksR(python)"
+    def_Install_Select="3"
+    echo -e "${COLOR_YELOW}You have 5 options for your kcptun/ss/ssr install.${COLOR_END}"#
+#    echo "1: Install Shadowsocks-libev"
+#    echo "2: Install ShadowsocksR(python)"
     echo "3: Install KCPTUN"
-    echo "4: Install Shadowsocks-libev + KCPTUN"
-    echo "5: Install ShadowsocksR(python) + KCPTUN [default]"
+#    echo "4: Install Shadowsocks-libev + KCPTUN"
+#    echo "5: Install ShadowsocksR(python) + KCPTUN [default]"
     read -p "Enter your choice (1, 2, 3, 4, 5 or exit. default [${def_Install_Select}]): " Install_Select
 
     case "${Install_Select}" in
@@ -308,7 +308,7 @@ Dispaly_Selection(){
         ;;
     *)
         echo
-        echo -e "${COLOR_PINK}No input,You will install ShadowsocksR(python) + KCPTUN${COLOR_END}"
+        echo -e "${COLOR_PINK}No input,You will install KCPTUN${COLOR_END}"
         Install_Select="${def_Install_Select}"
     esac
 }
@@ -324,20 +324,20 @@ check_kcptun_for_ss_ssr_installed(){
     kcptun_install_flag=""
     ss_libev_install_flag=""
     ssr_install_flag=""
-    if [ "${Install_Select}" == "1" ] || [ "${Install_Select}" == "4" ] || [ "${Update_Select}" == "1" ] || [ "${Update_Select}" == "4" ] || [ "${Uninstall_Select}" == "1" ] || [ "${Uninstall_Select}" == "4" ]; then
-        if [[ "$(command -v "ss-server")" ]] || [[ "$(command -v "/usr/local/bin/ss-server")" ]]; then
-            ss_libev_installed_flag="true"
-        else
-            ss_libev_installed_flag="false"
-        fi
-    fi
-    if [ "${Install_Select}" == "2" ] || [ "${Install_Select}" == "5" ] || [ "${Update_Select}" == "2" ] || [ "${Update_Select}" == "4" ] || [ "${Uninstall_Select}" == "2" ] || [ "${Uninstall_Select}" == "4" ]; then
-        if [[ -x /usr/local/shadowsocksR/shadowsocks/server.py ]] && [[ -s /usr/local/shadowsocksR/shadowsocks/__init__.py ]]; then
-            ssr_installed_flag="true"
-        else
-            ssr_installed_flag="false"
-        fi
-    fi
+#    if [ "${Install_Select}" == "1" ] || [ "${Install_Select}" == "4" ] || [ "${Update_Select}" == "1" ] || [ "${Update_Select}" == "4" ] || [ "${Uninstall_Select}" == "1" ] || [ "${Uninstall_Select}" == "4" ]; then
+#        if [[ "$(command -v "ss-server")" ]] || [[ "$(command -v "/usr/local/bin/ss-server")" ]]; then
+#            ss_libev_installed_flag="true"
+#        else
+#            ss_libev_installed_flag="false"
+#        fi
+#    fi
+#    if [ "${Install_Select}" == "2" ] || [ "${Install_Select}" == "5" ] || [ "${Update_Select}" == "2" ] || [ "${Update_Select}" == "4" ] || [ "${Uninstall_Select}" == "2" ] || [ "${Uninstall_Select}" == "4" ]; then
+#       if [[ -x /usr/local/shadowsocksR/shadowsocks/server.py ]] && [[ -s /usr/local/shadowsocksR/shadowsocks/__init__.py ]]; then
+#            ssr_installed_flag="true"
+#        else
+#            ssr_installed_flag="false"
+#        fi
+#    fi
     if [ "${Install_Select}" == "3" ] || [ "${Install_Select}" == "4" ] || [ "${Install_Select}" == "5" ] || [ "${Update_Select}" == "3" ] || [ "${Update_Select}" == "4" ] || [ "${Uninstall_Select}" == "3" ] || [ "${Uninstall_Select}" == "4" ]; then
         if [[ "$(command -v "/usr/local/kcptun/kcptun")" ]] || [[ "$(command -v "kcptun")" ]]; then
             kcptun_installed_flag="true"
