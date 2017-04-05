@@ -261,10 +261,13 @@ get_ip(){
     [ -z ${IP} ] && IP=$(wget -qO- -t1 -T2 ipinfo.io/ip )
     [ ! -z ${IP} ] && echo ${IP} || echo
 }
+
+
 Dispaly_Selection(){
     def_Install_Select="1"
     echo -e "${COLOR_YELOW}You will install kcptun/ss/ssr.${COLOR_END}"
-    read -p "[${def_Install_Select}]): " Install_Select
+    echo "1: Install KCPTUN"
+    read -p "PRESS Enter (default [${def_Install_Select}]): " Install_Select
 
     case "${Install_Select}" in
     1)
@@ -281,6 +284,9 @@ Dispaly_Selection(){
         Install_Select="${def_Install_Select}"
     esac
 }
+
+
+
 # Install cleanup
 install_cleanup(){
     cd ${cur_dir}
@@ -1065,7 +1071,7 @@ fun_set_text_color
 clang_action=$1
 clear
 cur_dir=$(pwd)
-fun_clangcn "clear"
+fire_check "clear"
 Get_Dist_Name
 Check_OS_support
 pre_install_packs
