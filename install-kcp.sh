@@ -1463,7 +1463,7 @@ uninstall_kcptun_for_ss_ssr(){
     *)
         echo
         echo -e "${COLOR_PINK}No input,default select <Uninstall All>!${COLOR_END}"
-        Install_Select="${def_Install_Select}"
+        Uninstall_Select="${def_Uninstall_Select}"
         
     esac
     Press_Start
