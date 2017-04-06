@@ -1205,7 +1205,7 @@ pre_install_kcptun_for_ss_ssr(){
         echo "=========================================================="
         echo -e "${COLOR_PINK}Please input your KCPTUN setting:${COLOR_END}"
         echo
-        def_kcptun_pwd=`fun_randstr`
+        def_kcptun_pwd="666666"
         echo "Please input password for kcptun"
         read -p "(Default password: ${def_kcptun_pwd}):" set_kcptun_pwd
         [ -z "${set_kcptun_pwd}" ] && set_kcptun_pwd="${def_kcptun_pwd}"
@@ -1217,7 +1217,7 @@ pre_install_kcptun_for_ss_ssr(){
         # Set kcptun port
         while true
         do
-            def_kcptun_port="38989"
+            def_kcptun_port="18989"
             echo -e "Please input port for kcptun [1-65535]"
             read -p "(Default port: ${def_kcptun_port}):" set_kcptun_port
             [ -z "$set_kcptun_port" ] && set_kcptun_port="${def_kcptun_port}"
@@ -1244,8 +1244,9 @@ pre_install_kcptun_for_ss_ssr(){
         else
             while true
             do
-                def_kcptun_target_port=""
-                read -p "Please input kcptun Target Port for SS/SSR/Socks5 [1-65535]:" set_kcptun_target_port
+                def_kcptun_target_port="8989"
+                echo -e "Please input kcptun Target Port for SS/SSR/Socks5 [1-65535]"
+                read -p "(Default port: ${def_kcptun_target_port}):" set_kcptun_target_port
                 [ -z "$set_kcptun_target_port" ] && set_kcptun_target_port="${def_kcptun_target_port}"
                 expr ${set_kcptun_target_port} + 0 &>/dev/null
                 if [ $? -eq 0 ]; then
@@ -1427,13 +1428,13 @@ pre_install_kcptun_for_ss_ssr(){
 uninstall_kcptun_for_ss_ssr(){
     Get_Dist_Name
     fun_clangcn "clear"
-    def_Uninstall_Select="5"
+    def_Uninstall_Select="4"
     echo -e "${COLOR_YELOW}You have 5 options for your kcptun/ss/ssr Uninstall${COLOR_END}"
-    echo "1: Uninstall Shadowsocks-libev"
-    echo "2: Uninstall ShadowsocksR(python)"
+#    echo "1: Uninstall Shadowsocks-libev"
+#    echo "2: Uninstall ShadowsocksR(python)"
     echo "3: Uninstall KCPTUN"
-    echo "4: Uninstall All"
-    echo "5: Exit,cancell uninstall [default]"
+    echo "4: Uninstall All [default]"
+    echo "5: Exit,cancell uninstall"
     read -p "Enter your choice (1, 2, 3, ... or exit. default [${def_Uninstall_Select}]): " Uninstall_Select
     case "${Uninstall_Select}" in
     1)
