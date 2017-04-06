@@ -271,6 +271,9 @@ get_ip(){
     [ -z ${IP} ] && IP=$(wget -qO- -t1 -T2 ipv4.icanhazip.com | sed -r 's/\r//')
     [ ! -z ${IP} ] && echo ${IP} || echo
 }
+
+
+####################################DISPLAY SELECTION###################################
 Dispaly_Selection(){
     def_Install_Select="3"
     echo -e "${COLOR_YELOW}You have 5 options for your kcptun/ss/ssr install.${COLOR_END}"#
@@ -1459,69 +1462,70 @@ uninstall_kcptun_for_ss_ssr(){
         ;;
     *)
         echo
-        echo -e "${COLOR_PINK}No input,default select <Exit>, shell exit now!${COLOR_END}"
-        exit 1
+        echo -e "${COLOR_PINK}No input,default select <Uninstall All>!${COLOR_END}"
+        Install_Select="${def_Install_Select}"
+        
     esac
     Press_Start
     check_kcptun_for_ss_ssr_installed
-    if [ "${Uninstall_Select}" == "1" ] || [ "${Uninstall_Select}" == "4" ]; then
-        if [ "${ss_libev_installed_flag}" == "true" ]; then
-            ps -ef | grep -v grep | grep -i "ss-server" > /dev/null 2>&1
-            if [ $? -eq 0 ]; then
-                /etc/init.d/shadowsocks stop
-            fi
-            if check_sys packageManager yum; then
-                chkconfig --del shadowsocks
-            elif check_sys packageManager apt; then
-                update-rc.d -f shadowsocks remove
-            fi
-            rm -fr /etc/shadowsocks-libev
-            rm -f /usr/local/bin/ss-local
-            rm -f /usr/local/bin/ss-tunnel
-            rm -f /usr/local/bin/ss-server
-            rm -f /usr/local/bin/ss-manager
-            rm -f /usr/local/bin/ss-redir
-            rm -f /usr/local/bin/ss-nat
-            rm -f /usr/local/lib/libshadowsocks-libev.a
-            rm -f /usr/local/lib/libshadowsocks-libev.la
-            rm -f /usr/local/include/shadowsocks.h
-            rm -f /usr/local/lib/pkgconfig/shadowsocks-libev.pc
-            rm -f /usr/local/share/man/man1/ss-local.1
-            rm -f /usr/local/share/man/man1/ss-tunnel.1
-            rm -f /usr/local/share/man/man1/ss-server.1
-            rm -f /usr/local/share/man/man1/ss-manager.1
-            rm -f /usr/local/share/man/man1/ss-redir.1
-            rm -f /usr/local/share/man/man1/ss-nat.1
-            rm -f /usr/local/share/man/man8/shadowsocks-libev.8
-            rm -fr /usr/local/share/doc/shadowsocks-libev
-            rm -f /usr/bin/shadowsocks
-            rm -f /etc/init.d/shadowsocks
-            echo -e "${COLOR_GREEN}Shadowsocks-libev uninstall success!${COLOR_END}"
-        else
-            echo -e "${COLOR_GREEN}Shadowsocks-libev not install!${COLOR_END}"
-        fi
-    fi
-    if [ "${Uninstall_Select}" == "2" ] || [ "${Uninstall_Select}" == "4" ]; then
-        if [ "${ssr_installed_flag}" == "true" ]; then
-            /etc/init.d/ssr status > /dev/null 2>&1
-            if [ $? -eq 0 ]; then
-                /etc/init.d/ssr stop
-            fi
-            if check_sys packageManager yum; then
-                chkconfig --del ssr
-            elif check_sys packageManager apt; then
-                update-rc.d -f ssr remove
-            fi
-            rm -f ${ssr_config}
-            rm -f /usr/bin/ssr
-            rm -f /etc/init.d/ssr
-            rm -f /var/log/shadowsocksR.log
-            rm -rf /usr/local/shadowsocksR
-            echo -e "${COLOR_GREEN}ShadowsocksR uninstall success!${COLOR_END}"
-        else
-            echo -e "${COLOR_GREEN}ShadowsocksR not install!${COLOR_END}"
-        fi
-    fi
+#    if [ "${Uninstall_Select}" == "1" ] || [ "${Uninstall_Select}" == "4" ]; then
+#        if [ "${ss_libev_installed_flag}" == "true" ]; then
+#           ps -ef | grep -v grep | grep -i "ss-server" > /dev/null 2>&1
+#            if [ $? -eq 0 ]; then
+#                /etc/init.d/shadowsocks stop
+#            fi
+#            if check_sys packageManager yum; then
+#                chkconfig --del shadowsocks
+#            elif check_sys packageManager apt; then
+#                update-rc.d -f shadowsocks remove
+#            fi
+#            rm -fr /etc/shadowsocks-libev
+#            rm -f /usr/local/bin/ss-local
+#            rm -f /usr/local/bin/ss-tunnel
+#            rm -f /usr/local/bin/ss-server
+#            rm -f /usr/local/bin/ss-manager
+#            rm -f /usr/local/bin/ss-redir
+#            rm -f /usr/local/bin/ss-nat
+#            rm -f /usr/local/lib/libshadowsocks-libev.a
+#            rm -f /usr/local/lib/libshadowsocks-libev.la
+#            rm -f /usr/local/include/shadowsocks.h
+#            rm -f /usr/local/lib/pkgconfig/shadowsocks-libev.pc
+#            rm -f /usr/local/share/man/man1/ss-local.1
+#            rm -f /usr/local/share/man/man1/ss-tunnel.1
+#            rm -f /usr/local/share/man/man1/ss-server.1
+#            rm -f /usr/local/share/man/man1/ss-manager.1
+#            rm -f /usr/local/share/man/man1/ss-redir.1
+#            rm -f /usr/local/share/man/man1/ss-nat.1
+#            rm -f /usr/local/share/man/man8/shadowsocks-libev.8
+#            rm -fr /usr/local/share/doc/shadowsocks-libev
+#            rm -f /usr/bin/shadowsocks
+#            rm -f /etc/init.d/shadowsocks
+#            echo -e "${COLOR_GREEN}Shadowsocks-libev uninstall success!${COLOR_END}"
+#        else
+#            echo -e "${COLOR_GREEN}Shadowsocks-libev not install!${COLOR_END}"
+#        fi
+#    fi
+#    if [ "${Uninstall_Select}" == "2" ] || [ "${Uninstall_Select}" == "4" ]; then
+#        if [ "${ssr_installed_flag}" == "true" ]; then
+#            /etc/init.d/ssr status > /dev/null 2>&1
+#            if [ $? -eq 0 ]; then
+#               /etc/init.d/ssr stop
+#            fi
+#            if check_sys packageManager yum; then
+#                chkconfig --del ssr
+#            elif check_sys packageManager apt; then
+#                update-rc.d -f ssr remove
+#            fi
+#            rm -f ${ssr_config}
+#            rm -f /usr/bin/ssr
+#            rm -f /etc/init.d/ssr
+#            rm -f /var/log/shadowsocksR.log
+#            rm -rf /usr/local/shadowsocksR
+#            echo -e "${COLOR_GREEN}ShadowsocksR uninstall success!${COLOR_END}"
+#        else
+#            echo -e "${COLOR_GREEN}ShadowsocksR not install!${COLOR_END}"
+#        fi
+#    fi
     if [ "${Uninstall_Select}" == "3" ] || [ "${Uninstall_Select}" == "4" ]; then
         if [ "${kcptun_installed_flag}" == "true" ]; then
             /etc/init.d/kcptun status > /dev/null 2>&1
